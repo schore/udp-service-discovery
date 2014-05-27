@@ -1,4 +1,4 @@
-import disc_send_object
+import discrequestobj
 import socket
 
 
@@ -7,8 +7,8 @@ def server(port):
     sock.bind(('', port))
     while True:
         data, addr = sock.recvfrom(
-                disc_send_object.DiscObjectRequest.get_size())
-        disc_type = disc_send_object.DiscObjectRequest.decode(data)
+                discrequestobj.DiscObjectRequest.get_size())
+        disc_type = discrequestobj.DiscObjectRequest.decode(data)
         print "received " + data +" from " + addr[0]+ " " + str(addr[1])
         print "Type" + str(disc_type)
 

@@ -1,12 +1,12 @@
 import socket
 import time
-import disc_send_object
+import discrequestobj
 
 def discovery(ip, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     i = 0
     while True:
-        data_stream = disc_send_object.DiscObjectRequest.encode(i)
+        data_stream = discrequestobj.DiscObjectRequest.encode(i, 3231)
         i = i + 1
         sock.sendto(data_stream, (ip, port))
         print "Sending test" + str(i)
