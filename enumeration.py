@@ -27,6 +27,14 @@ class Enumeration(object):
             return False
         return True
 
+    def is_in_list(self, search):
+        """look if the object is in the list"""
+        if type(search) == int:
+            return self.is_numb_in_enum(search)
+        if type(search) == str:
+            return self.is_str_in_enum(search)
+        return False
+
     def numb_to_string(self, index):
         """convert numb to string"""
         if not self.is_numb_in_enum(index):
@@ -38,6 +46,28 @@ class Enumeration(object):
         for i in self.numerated:
             if i[1] == inputstring:
                 return i[0]
+
+    def get_numb(self, inp):
+        """
+        Get Number of the Element back return -1
+        in case of an error
+        """
+        if not self.is_in_list(inp):
+            return -1
+        if type(inp) == int:
+            return inp
+        return self.string_to_numb(inp)
+
+    def get_string(self, inp):
+        """
+        Get String of the Element back
+        """
+        if not self.is_in_list(inp):
+            return "Error " + str(inp)
+        if type(inp) == str:
+            return inp
+        return self.numb_to_string(inp)
+
 
 if __name__ == '__main__':
     TEST_NUMERATION = Enumeration(("a", "b", "c"))

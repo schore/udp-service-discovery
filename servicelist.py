@@ -28,8 +28,8 @@ class ServiceList(list):
         """
         Print the list item
         """
-        print self.service_type
-        print self.connection_type
+        print SERVICE_TYPE.get_string(self.service_type)
+        print SERVICE_CONNECTION_TYPE.get_string(self.connection_type)
         print self.addr
 
     @staticmethod
@@ -43,7 +43,7 @@ class ServiceList(list):
         """Returns a list of service you are looking for"""
         #checkin the input type
         if type(serv_to_disc) != int:
-            if type(serv_to_disc != str):
+            if type(serv_to_disc) != str:
                 raise Exception()
             serv = SERVICE_TYPE.string_to_numb(serv_to_disc)
         else:
@@ -51,26 +51,52 @@ class ServiceList(list):
         #iterating throug list
         ret = list()
         for i in ServiceList.Head:
-            if i.connection_type == serv:
+            if i.service_type == serv:
                 ret.append(i)
+        return ret
+
+    @staticmethod
+    def add_service(service_type, connection_type, address):
+        """add Service to the list"""
+        if not SERVICE_TYPE.is_in_list(service_type):
+            return False
+        if not SERVICE_CONNECTION_TYPE.is_in_list(connection_type):
+            return False
+        temp = ServiceList()
+        temp.service_type = SERVICE_TYPE.get_numb(service_type)
+        temp.connection_type = SERVICE_CONNECTION_TYPE.get_numb(connection_type)
+        temp.addr = address
+        return True
+
+    @staticmethod
+    def remove_service(service_type, connection_type, address):
+        """Remove Item From List"""
+        ret = False
+        service_type = SERVICE_TYPE.get_numb(service_type)
+        connection_type = SERVICE_CONNECTION_TYPE.get_numb(connection_type)
+        for i in ServiceList.Head:
+            if (i.service_type == service_type and
+                    i.connection_type == connection_type and
+                    i.addr == address):
+                ServiceList.Head.remove(i)
+                ret = True
         return ret
 
 
 
 if __name__ == "__main__":
-    TA = ServiceList()
-    TA.print_list()
-    TA.service_type = "No Idea"
-    TA.addr = 1
-    TB = ServiceList()
-    TB.service_type = "Fuck"
-    TB.connection_type = "Not Supported"
-    TB.addr = 2
-    TC = ServiceList()
-    TC.connection_type = "fuck"
-    TC.addr = 3
-    print len(ServiceList.Head)
-
-    ServiceList.find_service(1)
-    print "Printing whole list"
+    ServiceList.add_service("red", "tcp", 0)
+    ServiceList.add_service("green", "udp", 1)
+    ServiceList.add_service("blue", "zmq", 22)
+    ServiceList.add_service("blue", "tcp", 22)
     ServiceList.print_whole_list()
+    ServiceList.remove_service("red", "tcp", 0)
+    print "Testing Remove"
+    print "------------------"
+    ServiceList.print_whole_list()
+    print "Testing Find"
+    print "------------------"
+    SERV = ServiceList.find_service("blue")
+    for j in range(0, 2, 1):
+        print j
+        SERV[j].print_list()
