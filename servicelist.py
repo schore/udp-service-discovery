@@ -62,6 +62,8 @@ class ServiceList(list):
             return False
         if not SERVICE_CONNECTION_TYPE.is_in_list(connection_type):
             return False
+        #prevent service to be linked twice remove and then add it again
+        ServiceList.remove_service(service_type, connection_type, address)
         temp = ServiceList()
         temp.service_type = SERVICE_TYPE.get_numb(service_type)
         temp.connection_type = SERVICE_CONNECTION_TYPE.get_numb(connection_type)
@@ -88,6 +90,7 @@ if __name__ == "__main__":
     ServiceList.add_service("red", "tcp", 0)
     ServiceList.add_service("green", "udp", 1)
     ServiceList.add_service("blue", "zmq", 22)
+    ServiceList.add_service("red", "tcp", 0)
     ServiceList.add_service("blue", "tcp", 22)
     ServiceList.print_whole_list()
     ServiceList.remove_service("red", "tcp", 0)
