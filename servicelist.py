@@ -2,14 +2,7 @@
 Implementation of a List
 for Discovery/Registration of Services
 """
-from enumeration import Enumeration
-#only a dummy list at the momen
-SERVICE_TYPE = Enumeration(('red', 'green', 'blue'))
-#only a dummy list at the momen
-SERVICE_CONNECTION_TYPE = Enumeration((
-    'tcp',
-    'udp',
-    'zmq'))
+from staticenumerations import SERVICE_TYPE, SERVICE_CONNECTION_TYPE
 
 class ServiceList(list):
     """
