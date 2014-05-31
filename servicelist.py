@@ -3,6 +3,7 @@ Implementation of a List
 for Discovery/Registration of Services
 """
 from staticenumerations import SERVICE_TYPE, SERVICE_CONNECTION_TYPE
+import thread
 
 class ServiceList(list):
     """
@@ -10,6 +11,8 @@ class ServiceList(list):
     a static variable
     """
     Head = list()
+    Lock = thread.allocate_lock()
+
     def __init__(self):
         list.__init__(self)
         self.service_type = "Some stupid Type"
@@ -28,8 +31,10 @@ class ServiceList(list):
     @staticmethod
     def print_whole_list():
         """Print the whole list"""
+        ServiceList.Lock.acquire()
         for i in ServiceList.Head:
             i.print_list()
+        ServiceList.Lock.release()
 
     @staticmethod
     def find_service(serv_to_disc):
@@ -43,9 +48,11 @@ class ServiceList(list):
             serv = serv_to_disc
         #iterating throug list
         ret = list()
+        ServiceList.Lock.acquire()
         for i in ServiceList.Head:
             if i.service_type == serv:
                 ret.append(i)
+        ServiceList.Lock.release()
         return ret
 
     @staticmethod
@@ -69,12 +76,14 @@ class ServiceList(list):
         ret = False
         service_type = SERVICE_TYPE.get_numb(service_type)
         connection_type = SERVICE_CONNECTION_TYPE.get_numb(connection_type)
+        ServiceList.Lock.acquire()
         for i in ServiceList.Head:
             if (i.service_type == service_type and
                     i.connection_type == connection_type and
                     i.addr == address):
                 ServiceList.Head.remove(i)
                 ret = True
+        ServiceList.Lock.release()
         return ret
 
 
