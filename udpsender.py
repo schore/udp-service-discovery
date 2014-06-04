@@ -1,18 +1,24 @@
 import socket
 import time
 import discrequestobj
+import staticenumerations
+import zmq
 
 def discovery(ip, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     discrequ = discrequestobj.DiscObject(0x43, "III")
-    i = 0
-    j = 2000
+    serv = staticenumerations.SERVICE_TYPE.get_numb('red')
+    ctx = zmq.Context()
+    zmq_sock = ctx.socket(zmq.REP)
     while True:
-        data_stream = discrequ.encode(i, j)
-        i = i + 1
-        j = j + 2
+        aport = zmq_sock.bind_to_random_port("tcp://*")
+        data_stream = discrequ.encode(serv, aport)
         sock.sendto(data_stream, (ip, port))
-        print "Sending test" + str(i)
+        print "Sending test" + str(aport)
+        rxob = zmq_sock.recv_pyobj()
+        zmq_sock.send("rx ok")
+        print rxob
+        print type(rxob)
         time.sleep(1)
 
 if __name__ == '__main__':

@@ -15,8 +15,12 @@ def service_sender(ip, port, service_type=None):
     s = ctx.socket(zmq.REQ)
     s.connect(addr_to_string(ip, port))
     s.send_pyobj(regserv)
-    print "leave"
- 
+    print "___________________"
+    print ip
+    print port
+    print service_type
+    print "-------------------"
+
 def servicedisc(port=5555):
     """Main servicedisc function"""
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -31,6 +35,10 @@ def servicedisc(port=5555):
 
 
 if __name__ == "__main__":
+    servicelist.ServiceList.add_service('red', 'tcp', 0)
+    servicelist.ServiceList.add_service('red', 'tcp', 1)
+    servicelist.ServiceList.add_service('red', 'tcp', 2)
+    servicelist.ServiceList.add_service('red', 'tcp', 3)
     servicedisc()
 #    thread.start_new_thread(my_thread, ("Test different thread",))
 #    thread.start_new_thread(my_thread, ("Third thread",))
