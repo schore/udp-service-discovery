@@ -3,11 +3,13 @@ import time
 import discrequestobj
 import staticenumerations
 import zmq
+import servicelist
 
+servlist = servicelist.ServiceList()
 def discovery(ip, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     discrequ = discrequestobj.DiscObject(0x43, "III")
-    serv = staticenumerations.SERVICE_TYPE.get_numb('red')
+    serv = staticenumerations.SERVICE_TYPE.get_numb('servdisc')
     ctx = zmq.Context()
     zmq_sock = ctx.socket(zmq.REP)
     while True:
@@ -19,6 +21,7 @@ def discovery(ip, port):
         zmq_sock.send("rx ok")
         print rxob
         print type(rxob)
+        import ipdb; ipdb.set_trace() # BREAKPOINT
         time.sleep(1)
 
 if __name__ == '__main__':
