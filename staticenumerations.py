@@ -11,4 +11,5 @@ SERVICE_CONNECTION_TYPE = Enumeration((
     'udp',
     'zmq'))
 
-
+#commands for service discvory
+SERVICE_CONNECTION_COMMAND = Enumeration(('add', 'remove'))

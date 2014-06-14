@@ -34,17 +34,6 @@ def servicedisc(port=5555):
         thread.start_new_thread(service_sender,
                 (addr[0], disc_type[1], disc_type[0]))
 
-def service_disc_server(port):
-    print "start discovery server"
-    ctx = zmq.Context.instance()
-    sock = ctx.socket(zmq.REP)
-    sock.bind("tcp://*:"+str(port))
-    addr = str(port)
-    servicelist.ServiceList.add_service('servdisc', 'tcp', ('ip', port))
-    while True:
-        print "server running"
-        time.sleep(10)
-
 
 if __name__ == "__main__":
     servicelist.ServiceList.add_service('red', 'tcp', 0)
